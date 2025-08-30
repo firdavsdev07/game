@@ -2,7 +2,7 @@
 
 ![Game Preview](public/readme.png)
 
-This project is a website for creating games. The site allows users to play interactive games and discover new games.
+This project is a snake game made by vanilla+vite. The site allows users to play interactive games and discover new games.
 
 ## Features
 
@@ -12,8 +12,8 @@ This project is a website for creating games. The site allows users to play inte
 
 ## Getting Started
 
-1. Install the necessary packages with `npm install`or `pnpm install`.
-2. Start the project with `npm start` or `pnpm dev`.
+1. Install the required packages using `npm install`.
+2. Run the project using `npm start`.
 
 ## Image
 
