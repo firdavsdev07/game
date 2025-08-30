@@ -1,0 +1,742 @@
+@import url("https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;700&display=swap");
+
+:root {
+  --primary-color: #00ff00;
+  --background-color: #0a0a0a;
+  --surface-color: #1a1a1a;
+  --surface-color-2: #2a2a2a;
+  --text-color: #ffffff;
+  --border-color: #333333;
+  --shadow-color: rgba(0, 255, 0, 0.3);
+  --danger-color: #ff0000;
+  --gradient-bg: linear-gradient(135deg, #00ff00 0%, #00cc00 100%);
+  --danger-gradient: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Pixelify Sans", sans-serif;
+  overflow: hidden;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+#app {
+  width: 100%;
+  height: 100vh;
+}
+
+/* =============== Modal Start ================= */
+.modal-start {
+  width: 100%;
+  height: 100vh;
+  background-image: url("/snake-bg.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--background-color);
+}
+
+.modal-start::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.modal-start .box {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 20px;
+}
+
+.game-title {
+  color: var(--text-color);
+  font-size: 4.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color);
+  letter-spacing: 3px;
+  animation: glow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color);
+  }
+  to {
+    text-shadow: 0 0 20px var(--primary-color), 0 0 30px var(--primary-color);
+  }
+}
+
+#start-game {
+  padding: 1.2rem 3rem;
+  background: var(--gradient-bg);
+  text-transform: uppercase;
+  border: 2px solid var(--primary-color);
+  color: var(--text-color);
+  font-weight: 700;
+  font-size: 1.8rem;
+  font-family: "Pixelify Sans";
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 200ms ease, box-shadow 200ms ease;
+  box-shadow: 0 0 15px var(--shadow-color);
+}
+
+#start-game:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 25px var(--shadow-color);
+}
+
+#start-game:active {
+  transform: translateY(0);
+  box-shadow: 0 0 10px var(--shadow-color);
+}
+
+/* =============== Game Layout ================= */
+.game-wrapper {
+  display: none;
+  width: 100%;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-image: url("/game-console.avif");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-color: var(--background-color);
+}
+
+.game-console {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.console-container {
+  width: 100%;
+  max-width: 1200px; /* Increased size */
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* =============== Game Screen ================= */
+.game-screen {
+  background: var(--surface-color);
+  border-radius: 20px;
+  border: 2px solid var(--border-color);
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  padding: 15px;
+  width: 100%;
+  max-width: 1100px;
+  height: 95vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.screen-header {
+  background: rgba(0, 0, 0, 0.4);
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.score-display,
+.high-score-display {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.score-label,
+.high-score-label {
+  color: var(--primary-color);
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-shadow: 0 0 5px var(--shadow-color);
+}
+
+.score-value,
+.high-score-value {
+  color: var(--text-color);
+  font-size: 1.4rem;
+  font-weight: 700;
+  min-width: 50px;
+  text-align: right;
+}
+
+.game-main-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  flex-grow: 1;
+  min-height: 0;
+}
+
+.game-area {
+  width: 100%;
+  max-width: 800px;
+  aspect-ratio: 1 / 1;
+  background: #000;
+  position: relative;
+  display: grid;
+  gap: 1px;
+  border-radius: 12px;
+  border: 2px solid var(--border-color);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.right-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 250px;
+  height: 100%;
+}
+
+.game-cell {
+  background-color: #111;
+}
+
+.game-cell.snake {
+  background: var(--gradient-bg);
+  border-radius: 4px;
+  box-shadow: 0 0 10px var(--shadow-color);
+}
+
+.game-cell.food {
+  background: var(--danger-gradient);
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+  animation: food-glow 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes food-glow {
+  from {
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+  }
+  to {
+    box-shadow: 0 0 20px rgba(255, 0, 0, 1);
+  }
+}
+
+.game-message {
+  text-align: center;
+  color: var(--primary-color);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.9),
+    rgba(20, 20, 20, 0.9)
+  );
+  z-index: 10;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+}
+
+.game-over-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+#game-over-restart-btn {
+  width: 50px;
+  height: 50px;
+  background: var(--gradient-bg);
+  color: var(--text-color);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+#game-over-restart-btn:hover {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  transform: scale(1.05);
+}
+
+.game-message.game-over {
+  background: linear-gradient(
+    135deg,
+    rgba(20, 0, 0, 0.95),
+    rgba(50, 0, 0, 0.95)
+  );
+  color: var(--danger-color);
+}
+
+.game-message h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 15px currentColor;
+}
+
+.game-message p {
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+.game-message.paused {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 20, 0.95),
+    rgba(0, 0, 50, 0.95)
+  );
+  color: #00ccff;
+}
+
+#continue-btn {
+  padding: 1rem 2rem;
+  background: var(--gradient-bg);
+  text-transform: uppercase;
+  border: 2px solid var(--primary-color);
+  color: var(--text-color);
+  font-weight: 700;
+  font-size: 1.4rem;
+  font-family: "Pixelify Sans";
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 200ms ease, box-shadow 200ms ease;
+  box-shadow: 0 0 15px var(--shadow-color);
+  margin-top: 1rem;
+}
+
+#continue-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 25px var(--shadow-color);
+}
+
+/* =============== Controls ================= */
+.control-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+  background: var(--surface-color-2);
+  color: var(--text-color);
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.control-btn:hover {
+  background: var(--gradient-bg);
+  border-color: var(--primary-color);
+  color: var(--text-color);
+  transform: scale(1.05);
+}
+
+.control-btn.muted {
+  color: var(--danger-color);
+  border-color: var(--danger-color);
+  background: var(--surface-color-2);
+}
+
+.speed-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+  width: 100%;
+  max-width: 220px;
+  margin: 0 auto;
+}
+
+.speed-label {
+  color: var(--primary-color);
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-shadow: 0 0 5px var(--shadow-color);
+}
+
+.speed-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.speed-btn {
+  padding: 10px 15px;
+  background: var(--surface-color);
+  color: var(--text-color);
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  font-family: "Pixelify Sans";
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 200ms ease;
+  width: 60px;
+  text-align: center;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+.speed-btn:hover {
+  background: var(--gradient-bg);
+  color: var(--text-color);
+  border-color: var(--primary-color);
+  transform: scale(1.05);
+}
+
+.speed-btn.active {
+  background: var(--gradient-bg);
+  color: var(--text-color);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 12px var(--shadow-color);
+  transform: scale(1.05);
+}
+
+.direction-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 220px;
+  margin: 0 auto;
+}
+
+.direction-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.direction-btn {
+  width: 60px;
+  height: 60px;
+  background: var(--surface-color-2);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: all 200ms ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.direction-btn:hover {
+  background: var(--gradient-bg);
+  border-color: var(--primary-color);
+  color: var(--text-color);
+}
+
+.direction-btn:active {
+  transform: scale(0.95);
+  background: var(--primary-color);
+  color: var(--text-color);
+}
+
+.direction-btn svg {
+  width: 32px;
+  height: 32px;
+}
+
+/* =============== Info Button and Modal ================= */
+.info-btn {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background: var(--gradient-bg);
+  border: 2px solid var(--primary-color);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 15px var(--shadow-color);
+  transition: transform 200ms ease;
+  z-index: 50;
+}
+
+.info-btn:hover {
+  transform: scale(1.1);
+}
+
+.info-btn svg {
+  width: 30px;
+  height: 30px;
+}
+
+.modal-info {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 200;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-info .box {
+  width: 100%;
+  max-width: 500px;
+  background: var(--surface-color);
+  padding: 30px;
+  border-radius: 20px;
+  border: 2px solid var(--border-color);
+  text-align: center;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.modal-info .box p {
+  font-size: 1.2rem;
+  margin: 10px 0;
+}
+
+.modal-info .box a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.modal-info .box a:hover {
+  text-decoration: underline;
+}
+
+#close-info {
+  padding: 1rem 2rem;
+  background: var(--danger-gradient);
+  border: 2px solid var(--danger-color);
+  color: var(--text-color);
+  font-weight: 700;
+  font-size: 1.4rem;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: transform 200ms ease;
+}
+
+#close-info:hover {
+  transform: translateY(-3px);
+}
+
+/* =============== Responsive Design ================= */
+@media (max-width: 1200px) {
+  .game-main-content {
+    gap: 15px;
+  }
+  .game-area {
+    max-width: 450px;
+  }
+  .right-panel {
+    max-width: 220px;
+  }
+  .speed-control {
+    max-width: 200px;
+  }
+  .speed-btn {
+    width: 55px;
+    padding: 8px 12px;
+  }
+  .direction-controls {
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .game-wrapper {
+    padding: 10px;
+  }
+  .game-screen {
+    height: auto;
+    max-width: 700px;
+  }
+  .game-main-content {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  .game-area {
+    width: 100%;
+    max-width: 400px;
+    height: 400px;
+  }
+  .right-panel {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    gap: 15px;
+  }
+  .speed-control {
+    max-width: 180px;
+  }
+  .speed-buttons {
+    gap: 8px;
+  }
+  .direction-controls {
+    max-width: 180px;
+  }
+}
+
+@media (max-width: 767px) {
+  .game-title {
+    font-size: 3rem;
+  }
+  #start-game {
+    font-size: 1.4rem;
+    padding: 1rem 2rem;
+  }
+  .screen-header {
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+  }
+  .header-left,
+  .header-right {
+    justify-content: center;
+    width: 100%;
+    gap: 8px;
+  }
+  .score-label,
+  .high-score-label {
+    font-size: 1.1rem;
+  }
+  .score-value,
+  .high-score-value {
+    font-size: 1.3rem;
+  }
+  .right-panel {
+    flex-direction: column;
+    gap: 15px;
+    max-width: 300px;
+  }
+  .speed-control {
+    max-width: 160px;
+    padding: 12px;
+  }
+  .speed-btn {
+    width: 50px;
+    font-size: 0.9rem;
+    padding: 8px 10px;
+  }
+  .direction-controls {
+    max-width: 160px;
+  }
+  .direction-btn {
+    width: 55px;
+    height: 55px;
+  }
+  .direction-btn svg {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .game-title {
+    font-size: 2.2rem;
+  }
+  .game-screen {
+    padding: 10px;
+  }
+  .game-area {
+    max-width: 300px;
+    height: 300px;
+  }
+  .right-panel {
+    gap: 10px;
+  }
+  .speed-control {
+    max-width: 140px;
+    padding: 10px;
+  }
+  .speed-buttons {
+    gap: 6px;
+  }
+  .speed-btn {
+    width: 45px;
+    font-size: 0.8rem;
+    padding: 6px 8px;
+  }
+  .direction-controls {
+    max-width: 140px;
+  }
+  .direction-btn {
+    width: 50px;
+    height: 50px;
+  }
+  .direction-btn svg {
+    width: 24px;
+    height: 24px;
+  }
+  .game-message h2 {
+    font-size: 2rem;
+  }
+  .game-message p {
+    font-size: 1rem;
+  }
+}

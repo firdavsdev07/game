@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Snake Game</title>
+  </head>
+  <body>
+    <div id="app">
+      <!-- Modal Start Game -->
+      <div class="modal-start" id="modal-start">
+        <div class="box">
+          <h1 class="game-title">Snake Game</h1>
+          <button id="start-game">Start Game</button>
+        </div>
+      </div>
+
+      <!-- Game Wrapper -->
+      <div class="game-wrapper" id="game-wrapper">
+        <div class="game-console" id="game-console">
+          <div class="console-container">
+            <!-- Game Screen -->
+            <div class="game-screen">
+              <div class="screen-header">
+                <div class="header-left">
+                  <div class="score-display">
+                    <span class="score-label">Score:</span>
+                    <span class="score-value" id="score">0</span>
+                  </div>
+                  <div class="high-score-display">
+                    <span class="high-score-label">Best:</span>
+                    <span class="high-score-value" id="high-score">0</span>
+                  </div>
+                </div>
+                <div class="speed-control">
+                  <label class="speed-label">Speed:</label>
+                  <div class="speed-buttons">
+                    <button class="speed-btn active" data-speed="300">
+                      1x
+                    </button>
+                    <button class="speed-btn" data-speed="200">2x</button>
+                    <button class="speed-btn" data-speed="100">3x</button>
+                  </div>
+                </div>
+                <div class="header-right">
+                  <button
+                    class="control-btn"
+                    id="pause-btn"
+                    title="Pause/Resume"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="feather feather-pause"
+                    >
+                      <rect x="6" y="4" width="4" height="16"></rect>
+                      <rect x="14" y="4" width="4" height="16"></rect>
+                    </svg>
+                  </button>
+                  <button
+                    class="control-btn"
+                    id="restart-btn"
+                    title="Restart Game"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="feather feather-rotate-cw"
+                    >
+                      <polyline points="23 4 23 10 17 10"></polyline>
+                      <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                    </svg>
+                  </button>
+                  <button
+                    class="control-btn"
+                    id="sound-btn"
+                    title="Toggle Sound"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="feather feather-volume-2"
+                    >
+                      <polygon
+                        points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"
+                      ></polygon>
+                      <path
+                        d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"
+                      ></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="game-main-content">
+                <div class="game-area" id="game-area"></div>
+                <div class="right-panel">
+                  <div class="controls-container">
+                    <div class="direction-controls">
+                      <div class="direction-row">
+                        <button class="direction-btn" id="up-btn">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="feather feather-arrow-up"
+                          >
+                            <line x1="12" y1="19" x2="12" y2="5"></line>
+                            <polyline points="5 12 12 5 19 12"></polyline>
+                          </svg>
+                        </button>
+                      </div>
+                      <div class="direction-row">
+                        <button class="direction-btn" id="left-btn">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="feather feather-arrow-left"
+                          >
+                            <line x1="19" y1="12" x2="5" y2="12"></line>
+                            <polyline points="12 19 5 12 12 5"></polyline>
+                          </svg>
+                        </button>
+                        <button class="direction-btn" id="down-btn">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="feather feather-arrow-down"
+                          >
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <polyline points="19 12 12 19 5 12"></polyline>
+                          </svg>
+                        </button>
+                        <button class="direction-btn" id="right-btn">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="feather feather-arrow-right"
+                          >
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="game-message" id="game-message">
+                <h2>Ready to Play!</h2>
+                <p>Use arrow keys or buttons below to control the snake</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <audio src="/snake.mp3" type="audio/mp3" id="play-audio" loop></audio>
+    </div>
+
+    <!-- Info Button -->
+    <button class="info-btn" id="info-btn" title="Game Info">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="feather feather-help-circle"
+      >
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+      </svg>
+    </button>
+
+    <!-- Info Modal -->
+    <div class="modal-info" id="modal-info">
+      <div class="box">
+        <h1 class="game-title">Snake Game</h1>
+        <p>Version: 1.0</p>
+        <p>Author: Firdavs Normurodov</p>
+        <p>
+          Code:
+          <a href="https://github.com/your-github-repo" target="_blank"
+            >GitHub Link</a
+          >
+        </p>
+        <p>
+          Contact Author:
+          <a
+            href="https://www.linkedin.com/in/your-linkedin-profile"
+            target="_blank"
+            >LinkedIn Profile</a
+          >
+        </p>
+        <button id="close-info">Close</button>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
